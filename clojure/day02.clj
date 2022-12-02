@@ -8,15 +8,14 @@
     ("C" "Z") :scissors))
 
 (def shape-points {:rock 1  :paper 2  :scissors 3})
-
-(defn match-points [opponent answer]
-  (case [opponent answer]
-    ([:scissors :rock] [:rock :paper] [:paper :scissors]) 6 
-    ([:paper :rock] [:scissors :paper] [:rock :scissors]) 0
-    ([:rock :rock] [:paper :paper] [:scissors :scissors]) 3))
-
 (def win-against {:scissors :rock  :rock :paper  :paper :scissors})
 (def lose-against {:rock :scissors  :paper :rock  :scissors :paper})
+
+(defn match-points [opponent answer]
+  (condp = answer 
+    (win-against opponent) 6
+    (lose-against opponent) 0
+    opponent 3))
 
 (defn guess-shape [opponent answer]
   (case answer
