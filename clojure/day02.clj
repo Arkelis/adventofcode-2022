@@ -7,11 +7,7 @@
     ("B" "Y") :paper
     ("C" "Z") :scissors))
 
-(defn shape-points [shape]
-  (case shape
-    :rock 1
-    :paper 2
-    :scissors 3))
+(def shape-points {:rock 1  :paper 2  :scissors 3})
 
 (defn match-points [opponent answer]
   (case [opponent answer]
@@ -19,17 +15,8 @@
     ([:paper :rock] [:scissors :paper] [:rock :scissors]) 0
     ([:rock :rock] [:paper :paper] [:scissors :scissors]) 3))
 
-(defn win-against [shape]
-  (case shape
-    :rock :paper
-    :paper :scissors
-    :scissors :rock))
-
-(defn lose-against [shape]
-  (case shape
-    :rock :scissors
-    :paper :rock
-    :scissors :paper))
+(def win-against {:scissors :rock  :rock :paper  :paper :scissors})
+(def lose-against {:rock :scissors  :paper :rock  :scissors :paper})
 
 (defn guess-shape [opponent answer]
   (case answer
@@ -37,28 +24,30 @@
     "Y" opponent
     "Z" (win-against opponent)))
 
-(defn compute-score [opponent answer]
-  (let [opponent-shape (shape-of-letter opponent)
-        answer-shape (shape-of-letter answer)]
-    (+ (shape-points answer-shape)
-       (match-points opponent-shape answer-shape))))
+(defn get-shapes-part1 [[opponent answer]]
+  [(shape-of-letter opponent) (shape-of-letter answer)])
 
-(defn guess-and-compute-score [opponent answer]
-  (let [opponent-shape (shape-of-letter opponent)
-        answer-shape (guess-shape opponent-shape answer)]
-    (+ (shape-points answer-shape)
-       (match-points opponent-shape answer-shape))))
+(defn get-shapes-part2 [[opponent answer]]
+  (let [opponent-shape (shape-of-letter opponent)] 
+    [opponent-shape (guess-shape opponent-shape answer)]))
 
-(defn get-data []
+(defn compute-score [[opponent answer]]
+  (+ (shape-points answer)
+     (match-points opponent answer)))
+
+(defn get-scores [shapes-getter]
   (let [input (slurp "inputs/day02.txt")]
     (->> (str/split-lines input)
-         (map #(str/split % #" ")))))
+         (map #(str/split % #" "))
+         (map shapes-getter)
+         (map compute-score)
+         (reduce +))))
 
 (defn part1 []
-  (reduce + (->> (get-data) (map #(apply compute-score %)))))
+  (get-scores get-shapes-part1))
 
 (defn part2 []
-  (reduce + (->> (get-data) (map #(apply guess-and-compute-score %)))))
+  (get-scores get-shapes-part2))
 
 (do
   (prn (part1))
