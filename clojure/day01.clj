@@ -8,9 +8,8 @@
 (defn get-sums []
   (let [input (slurp "inputs/day01.txt")]
     (->> (str/split input #"\n\n")
-         (map #(str/split % #"\n"))
-         (map #(map read-string %))
-         (map #(reduce + %)))))
+         (map str/split-lines)
+         (map #(reduce + (read-string %))))))
 
 (defn part1 []
   (sum-maxima 1 (get-sums)))
