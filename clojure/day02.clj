@@ -40,7 +40,7 @@
          (map #(str/split % #" "))
          (map shapes-getter)
          (map compute-score)
-         (reduce +))))
+         (apply +))))
 
 (defn part1 []
   (get-scores get-shapes-part1))

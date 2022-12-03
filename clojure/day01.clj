@@ -3,13 +3,13 @@
 
 (defn sum-maxima [top coll]
   (let [sorted (sort coll)]
-    (reduce + (take-last top sorted))))
+    (apply + (take-last top sorted))))
 
 (defn get-sums []
   (let [input (slurp "inputs/day01.txt")]
     (->> (str/split input #"\n\n")
          (map str/split-lines)
-         (map #(reduce + (read-string %))))))
+         (map #(apply + (map read-string %))))))
 
 (defn part1 []
   (sum-maxima 1 (get-sums)))
