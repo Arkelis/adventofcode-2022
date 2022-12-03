@@ -8,6 +8,9 @@
     (->> (str/split-lines input)
          (map vec))))
 
+(defn get-common-item [colls]
+  (->> colls (map set) (apply set/intersection) (first)))
+
 (defn get-priority [char]
   (if (= (str char) (str/upper-case char))
     (-> char (int) (- 38))
@@ -16,14 +19,14 @@
 (defn part1 []
   (->> (get-sacks)
        (map #(split-at (/ (count %) 2) %))
-       (map #(->> % (map set) (apply set/intersection) (first)))
+       (map get-common-item)
        (map get-priority)
        (apply +)))
 
 (defn part2 []
   (->> (get-sacks)
        (partition 3) 
-       (map #(->> % (map set) (apply set/intersection) (first))) 
+       (map get-common-item)
        (map get-priority) 
        (apply +)))
 
