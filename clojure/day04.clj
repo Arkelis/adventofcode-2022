@@ -10,15 +10,15 @@
     (-> (range start (inc end)) set)))
 
 (defn fully-overlap? [assign-pair]
-  (->> assign-pair
-       (filter #(= % (apply set/intersection assign-pair)))
-       (seq)))
+  (let [inter (apply set/intersection assign-pair)]
+    (->> assign-pair
+         (filter (partial = inter))
+         (seq))))
 
 (defn partially-overlap? [assign-pair]
   (->> assign-pair
        (apply set/intersection)
        (seq)))
-
 
 (defn get-assignments []
   (->> (slurp "inputs/day04.txt")
