@@ -9,12 +9,12 @@
           (map read-string it))]
     (-> (range start (inc end)) set)))
 
-(defn fully-overlap? [assign-pair]
-  (or (apply set/subset? assign-pair)
-      (apply set/superset? assign-pair)))
+(defn fully-overlap? [[set1 set2]]
+  (or (set/subset? set1 set2)
+      (set/superset? set1 set2)))
 
-(defn partially-overlap? [assign-pair]
-  (->> assign-pair
+(defn partially-overlap? [sets]
+  (->> sets
        (apply set/intersection)
        (seq)))
 
