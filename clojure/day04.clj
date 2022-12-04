@@ -10,10 +10,8 @@
     (-> (range start (inc end)) set)))
 
 (defn fully-overlap? [assign-pair]
-  (let [inter (apply set/intersection assign-pair)]
-    (->> assign-pair
-         (filter (partial = inter))
-         (seq))))
+  (or (apply set/subset? assign-pair)
+      (apply set/superset? assign-pair)))
 
 (defn partially-overlap? [assign-pair]
   (->> assign-pair
