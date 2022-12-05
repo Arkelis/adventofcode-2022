@@ -1,6 +1,5 @@
 (ns day05
-  (:require [clojure.set :as set]
-            [clojure.string :as str]))
+  (:require [clojure.string :as str]))
 
 (defn take-stack [stacks-data stack-index]
   (->> stacks-data
