@@ -47,8 +47,11 @@
         (assoc dest-idx dest-stack))))
 
 (defn play-steps [stacks [step & others] & {:keys [rev?]}]
-   (if (nil? step) stacks
-   (play-steps (play-step stacks step rev?) others :rev? rev?)))
+   (if (nil? step) 
+     stacks
+     (play-steps (play-step stacks step rev?) 
+                 others 
+                 :rev? rev?)))
 
 (defn part1 []
   (->> [:rev? true]
